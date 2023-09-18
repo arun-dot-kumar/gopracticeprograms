@@ -42,6 +42,16 @@ func (l *Ll) insertAtEnd(data int) {
 	l.tail = &node
 }
 
+func (l *Ll) reverse() {
+	current := l.head
+	l.head, l.tail = l.tail, l.head
+	var node *Node
+	for current != nil {
+		node = current.next
+		current.prev, current.next = current.next, current.prev
+		current = node
+	}
+}
 func (l *Ll) printfoward() {
 	if l.head != nil {
 		temp := l.head
@@ -73,4 +83,10 @@ func main() {
 	l.printfoward()
 	fmt.Println()
 	l.printreverse()
+	fmt.Println()
+	fmt.Println("after reverse")
+	l.reverse()
+	l.printreverse()
+	fmt.Println()
+	l.printfoward()
 }

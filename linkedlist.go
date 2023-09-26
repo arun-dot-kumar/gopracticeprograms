@@ -57,6 +57,20 @@ func (ll *linkedl) insertatEnd(data int) {
 	ll.len += 1
 }
 
+func (d *ll) insertt3rd(position int, data int) {
+	node := Node{data: data}
+	var count = 1
+	var current = d.head
+	for count < position-1 && current != nil {
+		count++
+		current = current.next
+	}
+	temp := current.next
+	current.next = &node
+	node.next = temp
+}
+
+
 func (ll *linkedl) reverse() {
 	if ll.head == nil {
 		return
@@ -82,6 +96,7 @@ func main() {
 	ll.insertatEnd(80)
 	ll.insertatEnd(90)
 	ll.insertatEnd(10)
+	ll.insertt3rd(3, 3)
 	ll.printLL()
 	ll.reverse()
 	ll.printLL()

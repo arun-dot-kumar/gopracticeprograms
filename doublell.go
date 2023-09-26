@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Node struct {
 	next *Node
@@ -8,85 +10,79 @@ type Node struct {
 	prev *Node
 }
 
-type Ll struct {
+type dl struct {
 	head *Node
 	tail *Node
 }
 
-func (l *Ll) insetAtBeg(data int) {
-	node := Node{data: data}
-	if l.head == nil {
-		l.head = &node
-		l.tail = &node
+func (d *dl) insertAtBeg(data int) {
+	node := &Node{data: data}
+	if d.head == nil {
+		d.tail = node
+		d.head = node
 		return
 	}
-	temp := l.head
-	l.head.prev = &node
-	l.head = &node
+	temp := d.head
+	d.head = node
 	node.next = temp
+	temp.prev = node
 }
 
-func (l *Ll) insertAtEnd(data int) {
-	node := Node{data: data}
-	if l.head == nil {
-		l.head = &node
-		l.tail = &node
+func (d *dl) insertAtlast(data int) {
+	node := &Node{data: data}
+	if d.head == nil {
+		d.insertAtBeg(data)
 		return
 	}
-	temp := l.head
+	temp := d.head
 	for temp.next != nil {
 		temp = temp.next
 	}
-	temp.next = &node
+	temp.next = node
 	node.prev = temp
-	l.tail = &node
+	d.tail = node
 }
 
-func (l *Ll) reverse() {
-	current := l.head
-	l.head, l.tail = l.tail, l.head
-	var node *Node
+func (d *dl) print() {
+	if d.head == nil {
+		return
+	}
+	temp := d.head
+	for temp != nil {
+		fmt.Printf("%d->", temp.data)
+		temp = temp.next
+	}
+}
+
+func (d *dl) reverse() {
+	if d.head == nil {
+		return
+	}
+	var current = d.head
+	var prev *Node
 	for current != nil {
-		node = current.next
-		current.prev, current.next = current.next, current.prev
-		current = node
+		next := current.next
+		current.next = prev
+		current.prev = next
+		prev = current
+		current = next
 	}
-}
-func (l *Ll) printfoward() {
-	if l.head != nil {
-		temp := l.head
-		for temp != nil {
-			fmt.Printf("%d->", temp.data)
-			temp = temp.next
-		}
-	}
-}
-
-func (l *Ll) printreverse() {
-	if l.head != nil {
-		temp := l.tail
-		for temp != nil {
-			fmt.Printf("%d->", temp.data)
-			temp = temp.prev
-		}
-	}
+	temp := d.head
+	d.head = prev
+	d.tail = temp
 }
 
 func main() {
-	l := Ll{}
-	l.insetAtBeg(4)
-	l.insetAtBeg(2)
-	l.insetAtBeg(3)
-	l.insetAtBeg(1)
-	l.insertAtEnd(5)
-	l.insertAtEnd(6)
-	l.printfoward()
+	d := dl{}
+	d.insertAtBeg(4)
+	d.insertAtBeg(3)
+	d.insertAtBeg(2)
+	d.insertAtBeg(1)
+	d.insertAtlast(5)
+	d.insertAtlast(6)
+	d.print()
 	fmt.Println()
-	l.printreverse()
-	fmt.Println()
-	fmt.Println("after reverse")
-	l.reverse()
-	l.printreverse()
-	fmt.Println()
-	l.printfoward()
+	d.reverse()
+	d.print()
+
 }
